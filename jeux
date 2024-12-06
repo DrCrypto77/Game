@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Voiture - Entretien & Réparations</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <h1>Jeu de Voiture</h1>
+        <div id="car-status">
+            <h2>État du véhicule</h2>
+            <p id="health">Santé: 100%</p>
+            <p id="fuel">Carburant: 100%</p>
+        </div>
+
+        <div id="actions">
+            <button onclick="repairCar()">Réparer le véhicule</button>
+            <button onclick="buyFuel()">Acheter du gaz</button>
+            <button onclick="spinWheel()">Tourner la roulette</button>
+        </div>
+
+        <div id="shop">
+            <h2>Boutique</h2>
+            <button onclick="purchaseFuel()">Acheter du carburant (50$)</button>
+        </div>
+
+        <div id="reward">
+            <p id="reward-text"></p>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 Jeu de Voiture - Telegram Bot</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    text-align: center;
+}
+
+#game-container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#reward-text {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #ff6347;
+}
+
+#shop {
+    margin-top: 30px;
+}
+
+footer {
+    margin-top: 40px;
+    font-size: 0.8em;
+    color: #888;
+}
+let health = 100;
+let fuel = 100;
+let money = 500;
+
+function updateStatus() {
+    document.getElementById("health").innerText = `Santé: ${health}%`;
+    document.getElementById("fuel").innerText = `Carburant: ${fuel}%`;
+}
+
+function repairCar() {
+    if (fuel >= 10) {
+        fuel -= 10;
+        health += 20;
+        if (health > 100) health = 100;
+        document.getElementById("reward-text").innerText = "Véhicule réparé avec succès! Vous avez gagné de l'énergie!";
+        updateStatus();
+    } else {
+        document.getElementById("reward-text").innerText = "Pas assez de carburant pour réparer!";
+    }
+}
+
+function buyFuel() {
+    if (money >= 50) {
+        money -= 50;
+        fuel += 30;
+        if (fuel > 100) fuel = 100;
+        document.getElementById("reward-text").innerText = "Vous avez acheté du carburant!";
+        updateStatus();
+    } else {
+        document.getElementById("reward-text").innerText = "Pas assez d'argent!";
+    }
+}
+
+function spinWheel() {
+    const reward = Math.random();
+    if (reward < 0.33) {
+        document.getElementById("reward-text").innerText = "Vous avez gagné de l'argent!";
+        money += 100;
+    } else if (reward < 0.66) {
+        document.getElementById("reward-text").innerText = "Vous avez gagné du carburant!";
+        fuel += 20;
+    } else {
+        document.getElementById("reward-text").innerText = "Pas de chance cette fois!";
+    }
+}
+
+function purchaseFuel() {
+    buyFuel();
+}
